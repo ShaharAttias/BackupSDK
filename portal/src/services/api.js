@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = "https://backupsdk-api.onrender.com/api";
 
 export async function getApps() {
   const response = await fetch(`${API_BASE_URL}/apps`);

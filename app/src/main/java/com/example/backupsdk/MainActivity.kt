@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             context = this,
             appId = appId,
             apiKey = "02f7640d355bc0a2d6d2f19ccb011e62088872a2bb474ffe0f62e247c96e7f67",
-            baseUrl = "http://10.0.2.2:3000/"
+            baseUrl = "https://backupsdk-api.onrender.com/"
         )
 
         BackupSDK.setUserId(userId)
