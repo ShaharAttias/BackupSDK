@@ -11,6 +11,17 @@ export async function getApps() {
   return data.apps;
 }
 
+export async function getAppBackups(appId) {
+  const response = await fetch(`${API_BASE_URL}/apps/${appId}/backups`);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to load app backups");
+  }
+
+  return data.backups;
+}
+
 export async function registerApp(appName, appId) {
   const response = await fetch(`${API_BASE_URL}/apps/register`, {
     method: "POST",

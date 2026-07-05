@@ -23,13 +23,8 @@ const getDeveloperApps = async () => {
 
   const appsWithStats = await Promise.all(
     apps.map(async (app) => {
-      const totalBackups = await Backup.countDocuments({
-        appId: app.appId,
-      });
-
-      const users = await Backup.distinct("userId", {
-        appId: app.appId,
-      });
+      const totalBackups = await Backup.countDocuments({ appId: app.appId });
+      const users = await Backup.distinct("userId", { appId: app.appId });
 
       return {
         _id: app._id,
@@ -64,8 +59,23 @@ const getAppStatistics = async ({ appId }) => {
   };
 };
 
+const getAppBackups = async ({ appId }) => {
+  const backups = await Backup.find({ appId }).sort({ updatedAt: -1 });
+
+  return backups.map((backup) => ({
+    id: backup.userId,
+    userId: backup.userId,
+    device: "Android Device",
+    status: "Active",
+    lastBackup: backup.updatedAt,
+    backupsCount: 1,
+    backup: backup.backupData,
+  }));
+};
+
 module.exports = {
   registerApp,
-  getAppStatistics,
   getDeveloperApps,
+  getAppStatistics,
+  getAppBackups,
 };

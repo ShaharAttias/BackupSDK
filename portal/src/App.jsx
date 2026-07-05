@@ -7,7 +7,7 @@ import RegisterModal from "./components/RegisterModal";
 import Overview from "./components/Overview";
 import UserData from "./components/UserData";
 
-import { getApps, registerApp } from "./services/api";
+import { getApps, registerApp, getAppBackups } from "./services/api";
 import { createAppId, createEmptyPortalApp } from "./utils/helpers";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
   const [selectedApp, setSelectedApp] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedMetric, setSelectedMetric] = useState("level");
+  const [selectedMetric, setSelectedMetric] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newAppName, setNewAppName] = useState("");
@@ -28,30 +28,52 @@ function App() {
 
   const loadApps = async () => {
     try {
+      setPortalError("");
+
       const serverApps = await getApps();
       const mappedApps = serverApps.map(createEmptyPortalApp);
 
       setApps(mappedApps);
 
       if (mappedApps.length > 0) {
-        handleSelectApp(mappedApps[0]);
+        await handleSelectApp(mappedApps[0]);
       }
     } catch (error) {
       setPortalError(error.message);
     }
   };
 
-  const handleSelectApp = (app) => {
-    const firstUser = app.usersData[0];
-    const firstMetric =
-      Object.keys(firstUser.backup).find(
-        (key) => typeof firstUser.backup[key] === "number"
-      ) || "level";
+  const handleSelectApp = async (app) => {
+    try {
+      setPortalError("");
 
-    setSelectedApp(app);
-    setSelectedUser(firstUser);
-    setSelectedMetric(firstMetric);
-    setActiveTab("overview");
+      const backups = await getAppBackups(app.appId);
+
+      const appWithBackups = {
+        ...app,
+        usersData: backups,
+      };
+
+      const firstUser = backups[0] || null;
+
+      setSelectedApp(appWithBackups);
+      setSelectedUser(firstUser);
+
+      if (firstUser) {
+        const firstMetric =
+          Object.keys(firstUser.backup || {}).find(
+            (key) => typeof firstUser.backup[key] === "number"
+          ) || "";
+
+        setSelectedMetric(firstMetric);
+      } else {
+        setSelectedMetric("");
+      }
+
+      setActiveTab("overview");
+    } catch (error) {
+      setPortalError(error.message);
+    }
   };
 
   const handleRegisterApp = async () => {
@@ -73,7 +95,7 @@ function App() {
         appName: createdApp.name,
       });
 
-      handleSelectApp(createdApp);
+      await handleSelectApp(createdApp);
     } catch (error) {
       setPortalError(error.message);
     }
@@ -86,7 +108,7 @@ function App() {
   };
 
   const numericKeys = selectedUser
-    ? Object.keys(selectedUser.backup).filter(
+    ? Object.keys(selectedUser.backup || {}).filter(
         (key) => typeof selectedUser.backup[key] === "number"
       )
     : [];
@@ -100,30 +122,14 @@ function App() {
           action: "Backup completed",
           user: selectedUser.id,
           status: "Success",
-          time: "2 min ago",
-        },
-        {
-          action: "Restore completed",
-          user: selectedUser.id,
-          status: "Success",
-          time: "8 min ago",
-        },
-        {
-          action: "Backup completed",
-          user: selectedUser.id,
-          status: "Success",
-          time: "15 min ago",
-        },
-        {
-          action: "Backup failed",
-          user: selectedUser.id,
-          status: "Failed",
-          time: "22 min ago",
+          time: selectedUser.lastBackup
+            ? new Date(selectedUser.lastBackup).toLocaleString()
+            : "No date",
         },
       ]
     : [];
 
-  if (!selectedApp || !selectedUser) {
+  if (!selectedApp) {
     return (
       <div className="portal-loading">
         <h2>BackupFlow</h2>
@@ -167,7 +173,7 @@ function App() {
             <h2>{selectedApp.name}</h2>
             <p>
               App ID: {selectedApp.appId} · Last sync:{" "}
-              {hasBackupActivity ? "today at 12:05" : "No backups yet"} ·
+              {hasBackupActivity ? "Synced from server" : "No backups yet"} ·
               Status: Active
             </p>
           </div>

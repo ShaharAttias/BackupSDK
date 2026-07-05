@@ -30,6 +30,22 @@ const registerApp = async (req, res) => {
   }
 };
 
+const getDeveloperApps = async (req, res) => {
+  try {
+    const apps = await appService.getDeveloperApps();
+
+    res.status(200).json({
+      message: "Apps retrieved successfully",
+      apps,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error getting apps",
+      error: error.message,
+    });
+  }
+};
+
 const getAppStatistics = async (req, res) => {
   try {
     const appId = req.app.appId;
@@ -54,17 +70,19 @@ const getAppStatistics = async (req, res) => {
   }
 };
 
-const getDeveloperApps = async (req, res) => {
+const getAppBackups = async (req, res) => {
   try {
-    const apps = await appService.getDeveloperApps();
+    const { appId } = req.params;
+
+    const backups = await appService.getAppBackups({ appId });
 
     res.status(200).json({
-      message: "Apps retrieved successfully",
-      apps,
+      message: "Backups retrieved successfully",
+      backups,
     });
   } catch (error) {
     res.status(500).json({
-      message: "Error getting apps",
+      message: "Error getting app backups",
       error: error.message,
     });
   }
@@ -72,6 +90,7 @@ const getDeveloperApps = async (req, res) => {
 
 module.exports = {
   registerApp,
-  getAppStatistics,
   getDeveloperApps,
+  getAppStatistics,
+  getAppBackups,
 };
