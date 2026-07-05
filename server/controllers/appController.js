@@ -32,7 +32,6 @@ const registerApp = async (req, res) => {
 
 const getAppStatistics = async (req, res) => {
   try {
-    // appId מגיע מה־middleware
     const appId = req.app.appId;
 
     const statistics = await appService.getAppStatistics({ appId });
@@ -70,7 +69,6 @@ const getDeveloperApps = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   registerApp,

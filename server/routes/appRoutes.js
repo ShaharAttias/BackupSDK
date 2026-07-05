@@ -9,8 +9,6 @@ const {
   getDeveloperApps,
 } = require("../controllers/appController");
 
-
-
 router.post("/apps/register", registerApp);
 router.get("/apps/statistics", authenticateApp, getAppStatistics);
 router.get("/apps", getDeveloperApps);

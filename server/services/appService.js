@@ -19,7 +19,31 @@ const registerApp = async ({ appName, appId }) => {
 };
 
 const getDeveloperApps = async () => {
-  return await App.find().sort({ createdAt: -1 });
+  const apps = await App.find().sort({ createdAt: -1 });
+
+  const appsWithStats = await Promise.all(
+    apps.map(async (app) => {
+      const totalBackups = await Backup.countDocuments({
+        appId: app.appId,
+      });
+
+      const users = await Backup.distinct("userId", {
+        appId: app.appId,
+      });
+
+      return {
+        _id: app._id,
+        appName: app.appName,
+        appId: app.appId,
+        apiKey: app.apiKey,
+        createdAt: app.createdAt,
+        totalBackups,
+        totalUsers: users.length,
+      };
+    })
+  );
+
+  return appsWithStats;
 };
 
 const getAppStatistics = async ({ appId }) => {
