@@ -1,39 +1,52 @@
 # BackupSDK
 
-BackupSDK is an Android SDK that enables developers to easily back up and restore application data through a secure cloud backend.
+BackupSDK is an Android SDK that enables developers to integrate cloud backup and restore functionality into their applications through a simple Kotlin API.
 
-The project also includes a backend server, a developer dashboard, and a demo Android application that demonstrates the SDK integration.
+The project provides a complete backup ecosystem, including an Android SDK, a Node.js backend server, a MongoDB database, a REST API, a Developer Portal, and comprehensive documentation.
+
+---
+
+## Project Links
+
+- **Documentation:** https://shaharattias.github.io/BackupSDK/
+- **Developer Portal:** https://YOUR-PORTAL-URL
+- **Swagger API:** https://backupsdk-api.onrender.com/api-docs
+- **Backend API:** https://backupsdk-api.onrender.com
 
 ---
 
 ## Features
 
-- 📦 Easy SDK integration
-- ☁️ Cloud backup and restore
-- 🔐 App registration with App ID & API Key
-- 📊 Developer Dashboard
-- 📖 Swagger API Documentation
-- 🗄 MongoDB Atlas storage
-- 🌐 Cloud-hosted backend (Render)
+- Lightweight Android SDK
+- Cloud backup and restore
+- App registration using App ID and API Key
+- Developer Portal
+- REST API
+- Swagger documentation
+- MongoDB Atlas storage
+- Cloud-hosted backend
 
 ---
 
-## Project Architecture
+## Architecture
 
-```
+```text
                 Android Application
                         │
                         ▼
                   BackupSDK Library
                         │
                         ▼
-              REST API (Express.js)
+                Retrofit REST Client
+                        │
+                        ▼
+               Node.js / Express API
                         │
                         ▼
                   MongoDB Atlas
                         ▲
                         │
-              Developer Dashboard
+               Developer Portal
                     (React)
 ```
 
@@ -41,58 +54,53 @@ The project also includes a backend server, a developer dashboard, and a demo An
 
 ## Repository Structure
 
-```
+```text
 BackupSDK/
 │
-├── app/          # Demo Android application
-├── backup/       # Android SDK
-├── portal/       # React developer dashboard
-└── server/       # Express backend server
+├── app/          Demo Android application
+├── backup/       Android SDK
+├── docs/         SDK documentation
+├── portal/       React Developer Portal
+└── server/       Node.js backend server
 ```
 
 ---
 
-## Technologies
+## Technology Stack
 
 ### Android SDK
+
 - Kotlin
 - Retrofit
 - OkHttp
 - Gson
 
 ### Backend
+
 - Node.js
 - Express.js
 - MongoDB Atlas
 - Mongoose
 
-### Dashboard
+### Developer Portal
+
 - React
 - Recharts
 
 ### Documentation
+
+- Docsify
 - Swagger UI
 
 ---
 
-## Getting Started
+## Quick Start
 
-### 1. Register your application
-
-Create a new application using the Developer Dashboard.
-
-You'll receive:
-
-- App ID
-- API Key
-
----
-
-### 2. Initialize the SDK
+Initialize the SDK:
 
 ```kotlin
 BackupSDK.init(
-    context = this,
+    context = applicationContext,
     appId = "YOUR_APP_ID",
     apiKey = "YOUR_API_KEY",
     baseUrl = "https://backupsdk-api.onrender.com/"
@@ -101,45 +109,28 @@ BackupSDK.init(
 BackupSDK.setUserId("user_001")
 ```
 
----
-
-### 3. Save Backup
+Save data:
 
 ```kotlin
-BackupSDK.save("level", "5")
+BackupSDK.save(
+    key = "level",
+    value = "5"
+)
 ```
 
----
-
-### 4. Restore Data
+Restore backup:
 
 ```kotlin
-val backup = BackupSDK.restoreAll()
-```
-
----
-
-## Backend API
-
-Base URL
-
-```
-https://backupsdk-api.onrender.com
-```
-
-Swagger Documentation
-
-```
-https://backupsdk-api.onrender.com/api-docs
+BackupSDK.restoreAll()
 ```
 
 ---
 
 ## Demo Application
 
-The repository includes a demo Android application that demonstrates how developers can integrate and use the SDK.
+The repository includes a demo Android application that demonstrates how to integrate BackupSDK.
 
-Features demonstrated:
+The demo includes:
 
 - SDK initialization
 - Save backup
@@ -148,11 +139,20 @@ Features demonstrated:
 
 ---
 
-## Developer Dashboard
+## Developer Portal
 
-The dashboard allows developers to:
+The Developer Portal allows developers to:
 
 - Register applications
-- Receive App ID & API Key
-- Monitor backup statistics
-- View user backup information
+- Generate App ID and API Key
+- View application statistics
+- Browse user backup data
+- Monitor recent backup activity
+
+---
+
+## Documentation
+
+Complete SDK documentation is available at:
+
+**https://shaharattias.github.io/BackupSDK/**
