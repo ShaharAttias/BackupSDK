@@ -11,6 +11,7 @@ The project provides a complete backup ecosystem, including an Android SDK, a No
 - Documentation: https://backupsdk-docs.onrender.com
 - Developer Portal: https://backupsdk-portal.onrender.com
 - Backend API: https://backupsdk-api.onrender.com
+- Swagger API: https://backupsdk-api.onrender.com/api-docs
 
 ---
 
