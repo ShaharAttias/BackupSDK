@@ -24,7 +24,7 @@ const swaggerOptions = {
       description: "API documentation for BackupSDK backend",
     },
   },
-  apis: ["routes/*.js"],
+  apis: ["./server/routes/*.js"],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
