@@ -19,12 +19,12 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "BackupFlow API",
+      title: "BackupSDK API",
       version: "1.0.0",
-      description: "API documentation for BackupFlow SDK backend",
+      description: "API documentation for BackupSDK backend",
     },
   },
-  apis: ["./routes/*.js"],
+  apis: ["routes/*.js"],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
@@ -35,7 +35,7 @@ app.use("/api", backupRoutes);
 app.use("/api", appRoutes);
 
 app.get("/", (req, res) => {
-  res.send("BackupFlow Server Running");
+  res.send("BackupSDK Server Running");
 });
 
 const PORT = process.env.PORT || 3000;
