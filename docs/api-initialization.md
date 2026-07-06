@@ -38,10 +38,10 @@ BackupSDK.init(
 
 During initialization, BackupSDK:
 
-- Creates the local StorageManager.
-- Configures the Retrofit client.
+- Creates the local `StorageManager`.
+- Configures the `ServerManager` and Retrofit.
 - Stores the application credentials.
-- Establishes communication with the backend server.
+- Prepares the SDK for communication with the backend server.
 
 The SDK must be initialized before calling any other BackupSDK function.
 
@@ -54,7 +54,7 @@ BackupSDK.init(
     context = applicationContext,
     appId = "demo-app",
     apiKey = "demo-api-key",
-    baseUrl = "http://192.168.1.15:3000"
+    baseUrl = "https://your-backend-url.com"
 )
 ```
 
@@ -62,8 +62,8 @@ BackupSDK.init(
 
 ## Notes
 
-- Call this method only once.
-- It is recommended to initialize the SDK when the application starts.
+- Call this method only once during application startup.
+- It is recommended to initialize the SDK in the `Application` class.
 - Calling SDK methods before initialization will result in an exception.
 
 ---
@@ -90,9 +90,9 @@ BackupSDK.setUserId("user123")
 
 ## Description
 
-BackupSDK stores and restores data according to the current user identifier.
+The User ID identifies which user's backup will be stored or restored.
 
-Every backup operation performed after calling `setUserId()` will be linked to this user.
+Every call to `save()`, `restoreAll()`, or `deleteBackup()` uses the currently configured User ID.
 
 ---
 
@@ -107,10 +107,4 @@ BackupSDK.setUserId("user123")
 ## Notes
 
 - A User ID must be set before calling `save()`, `restoreAll()`, or `deleteBackup()`.
-- If no User ID is defined, BackupSDK throws an exception.
-
----
-
-## Next
-
-Continue to **Backup Operations** to learn how to save, restore, and delete backup data.
+- If no User ID has been configured, BackupSDK throws an exception.

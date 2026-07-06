@@ -1,16 +1,19 @@
-- [Home](README.md)
-- [Getting Started](getting-started.md)
-- [Installation](installation.md)
-- [Architecture](architecture.md)
+- [Overview](README.md)
 
-- API Reference
-    - [Initialization](api-initialization.md)
-    - [Backup Operations](api-backup.md)
-    - [Callback](api-callback.md)
+- **Get Started**
+  - [Getting Started](getting-started.md)
+  - [Installation](installation.md)
 
-- [Dashboard Guide](dashboard-guide.md)
-- [Events](events.md)
-- [Examples](examples.md)
-- [Use Cases](use-cases.md)
-- [Screenshots & Demo](media.md)
-- [FAQ](faq.md)
+- **Architecture**
+  - [Architecture](architecture.md)
+
+- **API Reference**
+  - [API Reference](api-reference.md)
+  - [Initialization](api-initialization.md)
+  - [Backup Operations](api-backup.md)
+  - [Callback](api-callback.md)
+
+- **Developer Guides**
+  - [Developer Portal](developer-portal.md)
+  - [Examples](examples.md)
+  - [Use Cases](use-cases.md)

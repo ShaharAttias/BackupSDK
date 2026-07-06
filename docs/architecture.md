@@ -1,8 +1,8 @@
 # Architecture
 
-BackupSDK is designed as a client-server solution that separates the Android application, the SDK, and the backend infrastructure.
+BackupSDK follows a client-server architecture that separates the Android application, the SDK, and the backend infrastructure.
 
-This architecture allows developers to integrate cloud backup functionality without implementing their own backend services.
+This layered design allows developers to integrate cloud backup functionality without implementing their own backend services.
 
 ---
 
@@ -12,28 +12,25 @@ This architecture allows developers to integrate cloud backup functionality with
 Android Application
         │
         ▼
-    BackupSDK
+      BackupSDK
         │
         ▼
-  Local StorageManager
+ StorageManager (Local)
         │
         ▼
-    ServerManager
+   ServerManager
         │
         ▼
- Retrofit HTTP Client
+ Retrofit + REST API
         │
         ▼
-   REST API (HTTPS)
+ Node.js / Express
         │
         ▼
- Node.js + Express Server
+     MongoDB
         │
         ▼
-    MongoDB Database
-        │
-        ▼
- Developer Dashboard
+ Developer Portal
 ```
 
 ---
@@ -42,51 +39,47 @@ Android Application
 
 The Android application interacts only with BackupSDK.
 
-The application never communicates directly with the backend server or the database.
-
-This simplifies the integration process and keeps networking logic inside the SDK.
+It never communicates directly with the backend server or the database. All backup operations are handled internally by the SDK, making integration simple while hiding networking and storage complexity from the application.
 
 ---
 
 ## BackupSDK
 
-BackupSDK acts as the main entry point for developers.
+BackupSDK serves as the main entry point for developers.
 
-It is responsible for:
+Its responsibilities include:
 
 - SDK initialization
 - Local data management
 - Sending backup requests
 - Restoring backup data
-- Deleting backups
+- Deleting backup data
 - Managing user identification
-- Handling communication with the backend
+- Communicating with the backend server
 
 ---
 
-## Local StorageManager
+## StorageManager
 
-Before synchronizing data with the server, BackupSDK stores the data locally using the StorageManager component.
+Before synchronizing data with the backend, BackupSDK stores application data locally using the `StorageManager` component.
 
-This allows the SDK to maintain a local copy of the application data while keeping the cloud backup synchronized.
+During every save operation, the SDK synchronizes the complete local dataset with the backend server, ensuring that the cloud backup remains up to date.
 
 ---
 
 ## ServerManager
 
-ServerManager is responsible for configuring Retrofit and creating the API client.
+`ServerManager` is responsible for configuring Retrofit, creating the API service, and managing communication with the backend server.
 
-It initializes the server connection and provides access to all backend endpoints.
-
-The SDK initializes ServerManager only once during application startup.
+It is initialized once during SDK setup and reused throughout the application's lifecycle.
 
 ---
 
 ## Retrofit
 
-BackupSDK uses Retrofit to communicate with the backend REST API.
+BackupSDK uses Retrofit as its networking layer.
 
-Retrofit converts SDK function calls into HTTP requests and automatically parses server responses.
+Retrofit converts SDK operations into HTTP requests and automatically parses server responses into Kotlin objects.
 
 ---
 
@@ -96,11 +89,10 @@ The backend is implemented using Node.js and Express.
 
 Its responsibilities include:
 
-- Authenticating applications
+- Validating App ID and API Key
 - Processing backup requests
-- Restoring user data
+- Handling backup retrieval requests
 - Deleting backups
-- Returning backup status
 - Providing application statistics
 
 ---
@@ -109,36 +101,31 @@ Its responsibilities include:
 
 MongoDB stores backup documents for every registered application and user.
 
-The flexible document structure makes it suitable for storing different application data without requiring a fixed schema.
+Its flexible document model allows BackupSDK to store different application data without requiring a predefined schema.
 
 ---
 
-## Developer Dashboard
+## Developer Portal
 
-The Dashboard provides developers with a visual interface for monitoring their applications.
+The Developer Portal provides developers with a web interface for managing registered applications and viewing backup statistics.
 
 It allows developers to:
 
-- View registered applications
-- Monitor backup statistics
-- Analyze stored backups
-- Track SDK usage
+- Register applications
+- View application statistics
+- Monitor backup activity
 
 ---
 
 ## Design Principles
 
+The architecture was designed to keep the Android application independent of the backend implementation. All communication with the server is handled internally by the SDK, allowing developers to focus only on integrating the public SDK API.
+
 BackupSDK follows several design principles:
 
-- Separation of concerns
-- Simple SDK interface
-- Client-server architecture
-- REST-based communication
-- Modular design
-- Scalable backend
-
----
-
-## What's Next?
-
-Continue to **API Reference** to learn how each BackupSDK function works.
+- Separation of Concerns
+- Client-Server Architecture
+- REST-based Communication
+- Modular Design
+- Scalable Backend
+- Simple Public SDK API

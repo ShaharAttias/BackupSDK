@@ -4,23 +4,23 @@ This guide explains how to add BackupSDK to your Android project and prepare it 
 
 ---
 
-## Project Requirements
+## Prerequisites
 
-Before integrating the SDK, make sure your project includes:
+Before integrating BackupSDK, make sure you have:
 
 - Android Studio
-- Kotlin
-- Internet permission
+- A Kotlin-based Android project
+- Internet permission enabled
 - A running BackupSDK backend server
-- App ID and API Key
+- A valid App ID and API Key
 
 ---
 
 ## Step 1 — Add the SDK Module
 
-Import the BackupSDK module into your Android project.
+Add the BackupSDK module to your Android project.
 
-If the SDK is distributed as a local module, add it to your project and include it in your Gradle configuration.
+Include the SDK module as a dependency in your application's `build.gradle` file:
 
 ```gradle
 implementation(project(":backup"))
@@ -28,15 +28,15 @@ implementation(project(":backup"))
 
 > **Note**
 >
-> In this project, BackupSDK is integrated as a local module. Future versions may be distributed through Maven Central or JitPack.
+> BackupSDK is currently distributed as a local Android module.
 
 ---
 
-## Step 2 — Add Internet Permission
+## Step 2 — Grant Internet Permission
 
-Make sure the application has internet access.
+BackupSDK communicates with the backend server over HTTP.
 
-Add the following permission to `AndroidManifest.xml`:
+Add the following permission to your `AndroidManifest.xml` file:
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -44,11 +44,9 @@ Add the following permission to `AndroidManifest.xml`:
 
 ---
 
-## Step 3 — Configure the Server
+## Step 3 — Configure the SDK
 
-Before making any requests, BackupSDK needs to know where the backend server is located.
-
-Initialize the SDK using your server URL, App ID, and API Key:
+Initialize BackupSDK using your App ID, API Key, and backend server URL.
 
 ```kotlin
 BackupSDK.init(
@@ -59,91 +57,48 @@ BackupSDK.init(
 )
 ```
 
-Example for a local server:
+Example:
 
 ```kotlin
 BackupSDK.init(
     context = applicationContext,
     appId = "demo-app",
     apiKey = "demo-api-key",
-    baseUrl = "http://192.168.1.15:3000"
+    baseUrl = "https://your-backend-url.com"
 )
 ```
 
 ---
 
-## Step 4 — Set the User ID
+## Step 4 — Verify the Connection
 
-Set the current user before using backup operations.
-
-```kotlin
-BackupSDK.setUserId("user123")
-```
-
----
-
-## Step 5 — Verify the Connection
-
-After initialization, the SDK communicates with the BackupSDK backend through its REST API.
-
-Make sure that:
+Before using BackupSDK, verify that:
 
 - The backend server is running.
-- The server URL is accessible from the Android device.
-- The backend is connected to MongoDB.
+- The backend URL is accessible from the Android device.
+- MongoDB is connected.
 - The App ID and API Key are valid.
 
 ---
 
-## Common Issues
+## Troubleshooting
 
-### Server not reachable
+### Server is not reachable
 
 Verify that:
 
 - The backend server is running.
-- The correct IP address or domain is used.
-- The Android device and server are connected to the same network when using a local server.
+- The configured backend URL is correct.
+- The Android device can access the backend server.
 
 ---
 
-### SDK not initialized
+### SDK is not initialized
 
-If the SDK is used before calling:
-
-```kotlin
-BackupSDK.init(...)
-```
-
-an exception may be thrown.
+Make sure `BackupSDK.init()` is called before using any SDK operation.
 
 ---
 
-### User ID is not set
+### Invalid App ID or API Key
 
-Before saving, restoring, or deleting backup data, call:
-
-```kotlin
-BackupSDK.setUserId("user123")
-```
-
----
-
-### App ID or API Key is missing
-
-BackupSDK requires both an App ID and API Key during initialization.
-
-```kotlin
-BackupSDK.init(
-    context = applicationContext,
-    appId = "your-app-id",
-    apiKey = "your-api-key",
-    baseUrl = "https://your-server-url.com"
-)
-```
-
----
-
-## What's Next?
-
-Continue to **Architecture** to understand how BackupSDK communicates with the backend server and stores backup data.
+Verify that the App ID and API Key match the credentials registered in the Developer Portal.

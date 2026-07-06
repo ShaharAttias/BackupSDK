@@ -33,11 +33,11 @@ BackupSDK.save(
 
 ## Description
 
-The SDK first stores the data locally using `StorageManager`.
+The SDK stores the value locally using `StorageManager`.
 
-After the local storage is updated, the SDK sends the complete backup to the backend server using the configured REST API.
+After the local storage is updated, the SDK synchronizes the complete dataset with the backend server using the BackupSDK REST API.
 
-The synchronization process is performed asynchronously.
+All synchronization is performed asynchronously using Kotlin Coroutines.
 
 ---
 
@@ -56,8 +56,8 @@ BackupSDK.save(
 
 - Requires SDK initialization.
 - Requires a valid User ID.
-- Automatically synchronizes the updated backup with the server.
-- Multiple save requests are synchronized internally to prevent concurrent writes.
+- Automatically synchronizes the updated backup with the backend.
+- Save operations are synchronized internally to prevent concurrent writes.
 
 ---
 
@@ -65,7 +65,7 @@ BackupSDK.save(
 
 Returns a locally stored value associated with the specified key.
 
-This function reads data from the local storage and does not communicate with the server.
+This function reads data only from the local storage and does not communicate with the backend server.
 
 ## Syntax
 
@@ -130,7 +130,7 @@ BackupSDK.restoreAll()
 
 The SDK requests the user's backup from the backend server.
 
-If backup data exists, all key-value pairs are restored into the local storage.
+If backup data exists, every stored key-value pair is restored into the local storage.
 
 ---
 
@@ -146,13 +146,13 @@ BackupSDK.restoreAll()
 
 - Requires SDK initialization.
 - Requires a valid User ID.
-- Restores every key-value pair stored on the server.
+- Restores every key-value pair stored on the backend server.
 
 ---
 
 # deleteBackup()
 
-Deletes the user's backup from both the backend server and the local storage.
+Deletes the user's backup from the backend server and clears the local storage.
 
 ## Syntax
 
@@ -172,9 +172,9 @@ BackupSDK.deleteBackup()
 
 ## Description
 
-The SDK sends a delete request to the backend server.
+The SDK sends a delete request to the backend server and clears the locally stored backup data.
 
-If the operation succeeds, all locally stored data is also removed.
+The result of the server operation is returned through the optional callback.
 
 ---
 
@@ -190,10 +190,4 @@ BackupSDK.deleteBackup()
 
 - Requires SDK initialization.
 - Requires a valid User ID.
-- Deletes both local and remote backup data.
-
----
-
-## Next
-
-Continue to **Callback** to learn how BackupSDK reports operation results.
+- Removes the local backup data and requests deletion of the remote backup.
