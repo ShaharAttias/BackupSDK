@@ -8,10 +8,10 @@ The project provides a complete backup ecosystem, including an Android SDK, a No
 
 ## Project Links
 
-- **Documentation:** https://shaharattias.github.io/BackupSDK/
-- **Developer Portal:** https://YOUR-PORTAL-URL
-- **Swagger API:** https://backupsdk-api.onrender.com/api-docs
-- **Backend API:** https://backupsdk-api.onrender.com
+- Documentation: <https://shaharattias.github.io/BackupSDK/>
+- Developer Portal: <https://YOUR-PORTAL-URL>
+- Swagger API: <https://backupsdk-api.onrender.com/api-docs>
+- Backend API: <https://backupsdk-api.onrender.com>
 
 ---
 
@@ -148,11 +148,3 @@ The Developer Portal allows developers to:
 - View application statistics
 - Browse user backup data
 - Monitor recent backup activity
-
----
-
-## Documentation
-
-Complete SDK documentation is available at:
-
-**https://shaharattias.github.io/BackupSDK/**
