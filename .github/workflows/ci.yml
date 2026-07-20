@@ -56,3 +56,16 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t backupsdk-portal .
+
+  compose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      - name: Build all Docker services
+        run: docker compose build
